@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Candlestick Patterns</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/candlestick.css">
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="wrapper">
+        <div id="cover-page" class="presentation cover is-active">
+          <h1 class="heading">Candlestick Patterns</h1>
+          <p class="description">This application is designed to fetch candlestick patterns inside of the stock market. Candlestick patters, can be used as good indicators to predict where the price of a particular security might go in the short term. </p>
+          <h4 class="disclaimer">Disclaimer</h4>
+          <p class="disclaimer-msg">This is for demonstration purposes only and should not be used for anything other than what it is intended for.</p>
+          <select class="selection" name="Mag7" id="ticker-selector">
+            <option value="NONE" disabled selected>Select Option</option>
+            <option value="MSFT">MSFT</option>
+            <option value="AAPL">AAPL</option>
+            <option value="GOOG">GOOG</option>
+            <option value="AMZN">AMZN</option>
+            <option value="META">META</option>
+            <option value="NVDA">NVDA</option>
+            <option value="TSLA">TSLA</option>
+          </select>
+          <a class="submission" id="selection-submit" href="#">Submit</a>
+        </div>
+        <div id="transition-page" class="presentation transition">
+          <div class="spinner-wrapper">
+            <div class="spinner"></div>
+            <div class="spinner-center">
+              <h4>Making the world a better place!</h4>
+              <h1 class="color-theme-orange">Loading</h1>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <p data-arrival="0">This could take some time.</p>
+            <p data-arrival="1">Almost finished.</p>
+            <p data-arrival="2">I've been stalling. It takes less than a second to process but I must keep you engaged.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/index.js"></script>
+</body>
+</html>

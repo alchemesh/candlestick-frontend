@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-image-demo",
+  "version": "1.0.0",
+  "description": "nodejs image demo",
+  "author": "Jorrell Smith <sabatiel180@gmail.com>",
+  "license": "MIT",
+  "main": "app.js",
+  "keywords": [
+    "nodejs",
+    "bootstrap",
+    "express",
+    "amqp",
+    "ejs"
+  ],
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "express": "^4.16.4",
+    "ejs": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7" 
+  }
+
+}
