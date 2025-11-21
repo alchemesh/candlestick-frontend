@@ -18,7 +18,7 @@ jobs:
               run: echo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
 
             - name: Docker Login
-              run: docker login
+              run: docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD}}
 
             - name: Docker Publish
               run: echo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
