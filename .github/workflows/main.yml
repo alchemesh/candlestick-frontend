@@ -1,0 +1,16 @@
+name: Candlestick Frontend Pipeline
+
+on: push
+
+jobs:
+    first_job:
+        runs-on: self-hosted
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+              
+            - name: List and read files
+              run: |
+                  echo "Hello World!"
+                  ls -ltra
+                  cat README.md
