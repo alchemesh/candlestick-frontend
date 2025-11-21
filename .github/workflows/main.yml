@@ -12,7 +12,7 @@ jobs:
             - name: Dependencies Check
               run: |
                   chmod +x install-deps.sh
-                  ./install-deps.sh
+                  sudo ./install-deps.sh
 
             - name: Docker Build
               run: echo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
