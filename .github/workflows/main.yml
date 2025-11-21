@@ -3,14 +3,13 @@ name: Candlestick Frontend Pipeline
 on: push
 
 jobs:
-    first_job:
+    build_job:
         runs-on: self-hosted
         steps:
             - name: Checkout
               uses: actions/checkout@v5
               
-            - name: List and read files
+            - name: Dependencies Check
               run: |
-                  echo "Hello World!"
-                  ls -ltra
-                  cat README.md
+                  chmod +x install-deps.sh
+                  ./install-deps.sh
