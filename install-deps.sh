@@ -8,3 +8,4 @@ if ! [yum list installed "$DOCKER_INSTALL" &>/dev/null]; then
     sudo systemctl start docker
     sudo systemctl enable docker
     sudo docker run hello-world
+fi
