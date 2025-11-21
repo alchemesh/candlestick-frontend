@@ -12,30 +12,25 @@ jobs:
             - name: Dependencies Check
               run: |
                   chmod +x install-deps.sh
-                  ./install-deps.sh
+                  sudo ./install-deps.sh
 
             - name: Docker Build
-              run: echo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
+              run: echo sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
 
             - name: Docker Login
-              run: echo docker login --username=${{ vars.DOCKER_USERNAME }} --password-stdin=${{ secrets.DOCKER_PASSWORD}}
+              run: echo sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password-stdin=${{ secrets.DOCKER_PASSWORD}}
 
             - name: Docker Publish
-              run: echo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+              run: echo sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
     test_job:
         needs: build_job
         runs-on: self-hosted
         steps:
             - name: Checkout
               uses: actions/checkout@v5
-              
-            - name: Dependencies Check
-              run: |
-                 chmod +x install-deps.sh
-                  ./install-deps.sh
                   
             - name: Run Docker image
-              run: docker run -itd -p 3000:3000 --link rabbitmq:rabbitmq --link java-api:java-api node-frontend ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+              run: sudo docker run -itd -p 3000:3000 --link rabbitmq:rabbitmq --link java-api:java-api node-frontend ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
             - name: Test Docker Image
               run: curl http://localhost:3000
