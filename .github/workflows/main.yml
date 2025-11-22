@@ -13,7 +13,7 @@ jobs:
               run: sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
 
             - name: Docker Login
-              run: sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password-stdin=${{ secrets.DOCKER_PASSWORD}}
+              run: sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD}}
 
             - name: Docker Publish
               run: sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
