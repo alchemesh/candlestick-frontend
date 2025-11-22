@@ -8,11 +8,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v5
-              
-            - name: Dependencies Check
-              run: |
-                  chmod +x install-deps.sh
-                  sudo ./install-deps.sh
 
             - name: Docker Build
               run: echo sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
