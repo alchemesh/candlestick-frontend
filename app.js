@@ -63,7 +63,6 @@ function dataQualityCheck(data) {
   dataIsGood = false;
   
   tickers.forEach(ticker => {
-    //console.log(ticker + "    " + data)
     if(ticker === data)
       dataIsGood = true;
   });
@@ -92,6 +91,14 @@ router.get('/', function(req,res){
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
   res.sendFile(path + 'assets/views/index.html');
+ 
+});
+
+// API route for test
+router.get('/', function(req,res){
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.send("Test Successful");
  
 });
 

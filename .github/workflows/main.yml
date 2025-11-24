@@ -17,6 +17,9 @@ jobs:
 
             - name: Docker Publish
               run: sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+
+            - name: Docker Logout
+              run: sudo docker logout https://docker.io
     test_job:
         needs: build_job
         runs-on: self-hosted
@@ -25,10 +28,14 @@ jobs:
               uses: actions/checkout@v5
                   
             - name: Run Docker image
-              run: sudo docker run -itd -p 3000:3000 --link rabbitmq:rabbitmq --link java-api:java-api node-frontend ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+              run: sudo docker run -itd -p 3000:3000 frontend-app ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
             - name: Test Docker Image
-              run: curl http://localhost:3000
+              run: curl http://localhost:3000/test
+
+            - name: Clean Docker Deployments
+              run: |
+                  sudo docker stop frontend-app && sudo docker rm frontend-app
     deploy_job:
         needs: test_job
         runs-on: self-hosted
