@@ -4,7 +4,7 @@ const app = express();
 const router = express.Router();
 
 const path = __dirname + '/';
-const port = 3000;
+//const port = 3000;
 
 
 // Function for RabbitMQ to send message to queue
@@ -173,8 +173,8 @@ app.use('/', router);
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 
-app.listen(port, function () {
-  console.log('Example app listening on port 3000!')
-})
+//app.listen(port, function () {
+//  console.log('Example app listening on port 3000!')
+//})
 
 module.exports = app;
