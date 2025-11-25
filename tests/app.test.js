@@ -4,7 +4,7 @@ const app = require('../app');
 let server;
 
 beforeAll(() => {
-    server = app;
+    server = app.listen(3000);
 });
 
 afterAll((done) => {
