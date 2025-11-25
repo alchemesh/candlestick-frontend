@@ -30,7 +30,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: Event Test Result
-                path: artifacts/event-test.log
+                path: event-test.log
     build_job:
         if: github.ref == 'refs/head/main'
         runs-on: self-hosted
