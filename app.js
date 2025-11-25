@@ -95,7 +95,7 @@ router.get('/', function(req,res){
 });
 
 // API route for test
-router.get('/', function(req,res){
+router.get('/test', function(req,res){
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
   res.send("Test Successful");
