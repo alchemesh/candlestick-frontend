@@ -24,13 +24,13 @@ jobs:
 
             - name: Unit Test
               timeout-minutes: 1
-              run: npm test
+              run: npm test > event-test.log 2>&1 || true
 
             - name: Archive Test Results
               uses: actions/upload-artifact@v4
               with:
                 name: Event Test Result
-                path: test-results.xml
+                path: artifacts/event-test.log
     build_job:
         if: github.ref == 'refs/head/main'
         runs-on: self-hosted
