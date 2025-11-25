@@ -1,6 +1,16 @@
 // app.test.js
 const request = require('supertest');
 const app = require('../app');
+let server;
+
+beforeAll(() => {
+    server = app.listen(3000);
+});
+
+afterAll((done) => {
+    server.close(done);
+});
+
 
 describe ('Event API', () => {
     it('should return an error on the event trigger', async () => {
