@@ -5,6 +5,9 @@
   "author": "Jorrell Smith <sabatiel180@gmail.com>",
   "license": "MIT",
   "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
   "keywords": [
     "nodejs",
     "bootstrap",
