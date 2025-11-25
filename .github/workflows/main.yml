@@ -32,6 +32,20 @@ jobs:
               with:
                 name: Event Test Result
                 path: event-test.json
+    verify_unit_test_job:
+        runs-on: self-hosted
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Download Test Results
+              uses: actions/download-artifact@v4
+              with:
+                name: Event Test Result
+
+            - name: Simple Display Results
+              run: |
+                  cat event-test.json
     build_job:
         if: github.ref == 'refs/head/main'
         runs-on: self-hosted
