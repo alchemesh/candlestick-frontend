@@ -120,12 +120,13 @@ router.post('/api/start', function(req,res){
     const data = req.body;
 
     var event = data.event;
-    var ticker = data.ticker;
-
-    if(!dataQualityCheck(ticker))
-      throw new Error({eventID: null, ticker: ticker});
 
     if(event === "start") {
+      var ticker = data.ticker;
+
+      if(!dataQualityCheck(ticker))
+        throw new Error({eventID: null, ticker: ticker});
+
       const timestamp = new Date();
 
       const eventId = makeid(20);
