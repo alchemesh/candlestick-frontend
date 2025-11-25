@@ -43,10 +43,15 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 name: Event Test Result
+            
+            - name: Install jq
+              uses: dcarbone/install-jq-action@v3.2.0 # Or the latest version
+              with:
+                version: '1.8.0'
 
             - name: Simple Display Results
               run: |
-                  cat event-test.json
+                  jq -r .numTotalTests event-test.json
     build_job:
         if: github.ref == 'refs/head/main'
         runs-on: self-hosted
