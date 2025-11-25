@@ -33,6 +33,7 @@ jobs:
                 name: Event Test Result
                 path: event-test.json
     verify_unit_test_job:
+        needs: unit_test_job
         runs-on: self-hosted
         steps:
             - name: Checkout
