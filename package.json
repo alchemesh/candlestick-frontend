@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "app.js",
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --json --outputFile=event-test.json"
   },
   "keywords": [
     "nodejs",
