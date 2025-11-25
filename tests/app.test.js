@@ -14,7 +14,7 @@ test('Event API', async () => {
     .expect(201);
     
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toBeInstanceOf(Array);
+    expect(res.body).toBeInstanceOf(Object);
     expect(res.body.message).toEqual("Could not process the event")
     //});
 });

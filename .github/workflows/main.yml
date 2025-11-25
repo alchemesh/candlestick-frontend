@@ -23,6 +23,7 @@ jobs:
               run: npm install
 
             - name: Unit Test
+              timeout-minutes: 1
               run: npm test
     build_job:
         if: github.ref == 'refs/head/main'
