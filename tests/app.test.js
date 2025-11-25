@@ -39,7 +39,7 @@ describe ('Event API', () => {
 
     });
 
-    it('should return an error on the event trigger', async () => {
+    it('should return an error from fetching event data', async () => {
         const event = { event: 'test', ticker: null };
 
         const res = await request(app)

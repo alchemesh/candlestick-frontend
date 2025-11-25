@@ -99,7 +99,7 @@ router.get('/api/:eventID', function(req,res){
   try {
     const eventID = req.params.eventID;
 
-    if(typeof dataIntegrityCheck(eventID) != "boolean" && eventID.length != 20) {
+    if(typeof dataIntegrityCheck(eventID) != "boolean" || eventID.length != 20) {
           throw new Error({eventID: null, message: "Event ID is not valid"});
     }
 
