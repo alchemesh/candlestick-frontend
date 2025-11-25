@@ -5,8 +5,17 @@
   "author": "Jorrell Smith <sabatiel180@gmail.com>",
   "license": "MIT",
   "main": "app.js",
+  "jest": {
+    "reporters": [
+      "default",
+      ["jest-junit", {
+        "outputDirectory": "artifacts",
+        "outputName": "event-test.xml"
+      }]
+    ]
+  },
   "scripts": {
-    "test": "jest --detectOpenHandles --json --outputFile=event-test.json"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [
     "nodejs",
@@ -24,6 +33,7 @@
   "devDependencies": {
     "@types/amqplib": "^0.10.7",
     "jest": "^29.0.0",
+    "jest-junit": "^16.0.0",
     "supertest": "^6.0.0"
   }
 
