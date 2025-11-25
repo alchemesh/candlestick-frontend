@@ -100,14 +100,14 @@ router.get('/api/:eventID', function(req,res){
     const eventID = req.params.eventID;
 
     if(typeof dataIntegrityCheck(eventID) != "boolean" || eventID.length != 20) {
-          throw new Error({eventID: null, message: "Event ID is not valid"});
+      throw new Error({eventID: null, message: "Event ID is not valid"});
     }
 
     res.statusCode = 200;
     fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
   }
   catch(error) {
-    return res.status(201).json(error);
+    return res.status(201).json({eventID: null, message: "Event ID is not valid"});
   }
 });
 
