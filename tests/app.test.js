@@ -25,9 +25,9 @@ describe ('Event API', () => {
         const res = await request(app).get('/')
         
         expect(res.statusCode).toEqual(200);
-        //expect(res.body).toContain('<title>Candlestick Patterns</title>');
         expect(res.headers['content-type']).toMatch(/text\/html/);
-
+        expect(res.text).toContain('<title>Candlestick Patterns</title>');
+        
         //expect(res.body).toBeInstanceOf(Object);
         //expect(res.body.message).toEqual("Could not process the event")
 
