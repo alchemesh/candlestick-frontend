@@ -94,14 +94,6 @@ router.get('/', function(req,res){
  
 });
 
-// API route for test
-router.get('/test', function(req,res){
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  res.send("Test Successful");
- 
-});
-
 // API route to fetch the event data from the Java API
 router.get('/api/:eventID', function(req,res){
   const eventID = req.params.eventID;
