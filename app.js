@@ -174,7 +174,7 @@ app.use('/', router);
 app.set('view engine', 'ejs');
 
 app.listen(port, function () {
-  console.log('Example app listening on port 8080!')
+  console.log('Example app listening on port 3000!')
 })
 
 module.exports = app;
