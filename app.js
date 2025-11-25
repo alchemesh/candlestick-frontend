@@ -175,3 +175,5 @@ app.set('view engine', 'ejs');
 app.listen(port, function () {
   console.log('Example app listening on port 8080!')
 })
+
+module.exports = app;
