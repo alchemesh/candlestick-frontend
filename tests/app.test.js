@@ -11,8 +11,7 @@ describe ('Event API', () => {
         .send(event)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(201)
-        .end(app);
+        .expect(201);
         
         expect(res.statusCode).toEqual(201);
         expect(res.body).toBeInstanceOf(Object);
