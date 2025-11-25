@@ -2,7 +2,7 @@
 const request = require('supertest');
 const app = require('../app');
 
-describe('Event API', () => {
+describe('Event API', async () => {
     it('should return an error on the event trigger', async () => {
         const event = { event: 'test', ticker: null };
 
