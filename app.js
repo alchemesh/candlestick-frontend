@@ -9,25 +9,25 @@ const port = 3000;
 
 // Function for RabbitMQ to send message to queue
 async function sendToRabbitMQ(queueName, message) {
-    let connection;
-    try {
-        connection = await amqp.connect('amqp://rabbitmq') // Replace with your RabbitMQ connection string
-        const channel = await connection.createChannel();
+  let connection;
+  try {
+      connection = await amqp.connect('amqp://rabbitmq') // Replace with your RabbitMQ connection string
+      const channel = await connection.createChannel();
 
-        await channel.assertQueue(queueName, {
-            durable: false // Set to true if you want messages to persist across RabbitMQ restarts
-        });
+      await channel.assertQueue(queueName, {
+          durable: false // Set to true if you want messages to persist across RabbitMQ restarts
+      });
 
-        channel.sendToQueue(queueName, Buffer.from(message));
+      channel.sendToQueue(queueName, Buffer.from(message));
 
-        await channel.close();
-    } catch (error) {
-        console.error('Error sending message to RabbitMQ:', error);
-    } finally {
-        if (connection) {
-            await connection.close();
-        }
-    }
+      await channel.close();
+  } catch (error) {
+      console.error('Error sending message to RabbitMQ:', error);
+  } finally {
+      if (connection) {
+          await connection.close();
+      }
+  }
 }
 
 // Function to fetch the event data from the Java API
@@ -49,13 +49,13 @@ async function fetchUsersFromJavaAPI(eventID) {
 
 // Function to create Event ID
 function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 function dataQualityCheck(data) {
@@ -71,14 +71,14 @@ function dataQualityCheck(data) {
 }
 
 function dataIntegrityCheck(data) {
-        if(data.length < 1)
-               	return "none!";
+  if(data.length < 1)
+          return "none!";
 
-        re = /^[a-zA-Z0-9]*$/;
-        if(!re.test(data))
-               	return "wrong!";
+  re = /^[a-zA-Z0-9]*$/;
+  if(!re.test(data))
+          return "wrong!";
 
-        return true;
+  return true;
 }
 
 router.use(function (req,res,next) {
@@ -116,32 +116,39 @@ router.get('/api/:eventID', function(req,res){
 
 // API route to begin the event
 router.post('/api/start', function(req,res){
-  const data = req.body;
+  try {
+    const data = req.body;
 
-  var event = data.event;
-  var ticker = data.ticker;
+    var event = data.event;
+    var ticker = data.ticker;
 
-  console.log(ticker)
-  if(!dataQualityCheck(ticker))
-    res.status(201).json({eventID: null, ticker: ticker});
+    if(!dataQualityCheck(ticker))
+      throw new Error({eventID: null, ticker: ticker});
 
-  if(event === "start") {
-    const timestamp = new Date();
+    if(event === "start") {
+      const timestamp = new Date();
 
-    const eventId = makeid(20);
-    var message = {
-      eventID: eventId,
-      ticker: ticker,
-      timestamp: timestamp
-    };
+      const eventId = makeid(20);
+      var message = {
+        eventID: eventId,
+        ticker: ticker,
+        timestamp: timestamp
+      };
 
-    const jsonString = JSON.stringify(message);
+      const jsonString = JSON.stringify(message);    
+      sendToRabbitMQ('my_queue', jsonString);
 
-    
-    sendToRabbitMQ('my_queue', jsonString);
+      res.status(201).json(message);
+    }
+
+    else {
+      res.status(201).json({event: event, message: "Could not process the event"});
+    }
+  }
+  catch(error) {
+     return res.status(201).json(error);
   }
 
-  res.status(201).json(message);
 });
 
 // API route to render the chart
