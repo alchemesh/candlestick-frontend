@@ -96,14 +96,19 @@ router.get('/', function(req,res){
 
 // API route to fetch the event data from the Java API
 router.get('/api/:eventID', function(req,res){
-  const eventID = req.params.eventID;
+  try {
+    const eventID = req.params.eventID;
 
-  if(typeof dataIntegrityCheck(eventID) != "boolean") {
-        res.status(201).json({eventID: null});
+    if(typeof dataIntegrityCheck(eventID) != "boolean" && eventID.length != 20) {
+          throw new Error({eventID: null, message: "Event ID is not valid"});
+    }
+
+    res.statusCode = 200;
+    fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
   }
-
-  res.statusCode = 200;
-  fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
+  catch(error) {
+    res.status(201).json(error);
+  }
 });
 
 // API route to begin the event
