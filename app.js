@@ -2,7 +2,6 @@ const amqp = require('amqplib');
 const express = require('express');
 const app = express();
 const router = express.Router();
-const request = require('supertest');
 
 const path = __dirname + '/';
 const port = 3000;
