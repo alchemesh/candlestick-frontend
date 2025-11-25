@@ -107,8 +107,7 @@ router.get('/api/:eventID', function(req,res){
     fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
   }
   catch(error) {
-    console.log("Im here")
-    res.status(201).json(error);
+    return res.status(201).json(error);
   }
 });
 
