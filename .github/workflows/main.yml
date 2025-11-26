@@ -23,15 +23,37 @@ jobs:
               run: npm install
 
             - name: Unit Test
-              timeout-minutes: 1
               run: npm test
-              #run: npm test > event-test.log 2>&1 || true
 
             - name: Archive Test Results
               uses: actions/upload-artifact@v4
               with:
                 name: Event Test Result
                 path: artifacts/event-test.xml
+                retention-days: 5
+    code_coverage_job:
+        runs-on: self-hosted
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Setup NodeJS
+              uses: actions/setup-node@v4
+              with:
+                node-version: '24.11'
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Code Coverage
+              run: npm run coverage
+
+            - name: Archive Test Results
+              uses: actions/upload-artifact@v4
+              with:
+                name: Event Test Result
+                path: coverage
+                retention-days: 5
     verify_unit_test_job:
         needs: unit_test_job
         runs-on: self-hosted
@@ -43,16 +65,10 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 name: Event Test Result
-            
-            - name: Install jq
-              uses: dcarbone/install-jq-action@v3.2.0 # Or the latest version
-              with:
-                version: '1.8.0'
 
             - name: Simple Display Results
               run: |
                   cat event-test.xml
-                  #jq -r .numTotalTests event-test.json
     build_job:
         if: github.ref == 'refs/head/main'
         runs-on: self-hosted
