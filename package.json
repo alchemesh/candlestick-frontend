@@ -15,7 +15,8 @@
     ]
   },
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "coverage": "jest --coverage"
   },
   "keywords": [
     "nodejs",
