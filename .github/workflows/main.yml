@@ -113,6 +113,7 @@ jobs:
                       -p 3000:3000 \
                       ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
+                  sleep 30s
                   curl http://localhost:3000/
 
             #- name: Docker Build
