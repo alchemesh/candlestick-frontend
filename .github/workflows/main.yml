@@ -9,6 +9,7 @@ on:
 
 jobs:
     unit_test_job:
+        name: Unit Test
         runs-on: self-hosted
         steps:
             - name: Checkout
@@ -40,6 +41,7 @@ jobs:
                 path: artifacts/event-test.xml
                 retention-days: 5
     code_coverage_job:
+        name: Code Coverage
         runs-on: self-hosted
         steps:
             - name: Checkout
@@ -57,7 +59,7 @@ jobs:
                 key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                 restore-keys: |
                     ${{ runner.os }}-node-
-                      
+
             - name: Install Dependencies
               run: npm install
 
@@ -71,6 +73,7 @@ jobs:
                 path: coverage
                 retention-days: 5
     verify_unit_test_job:
+        name: Verify Unit Test
         needs: unit_test_job
         runs-on: self-hosted
         steps:
@@ -85,24 +88,48 @@ jobs:
             - name: Simple Display Results
               run: |
                   cat event-test.xml
-    build_job:
-        if: github.ref == 'refs/head/main'
+    build_image_job:
+        name: Docker Containerization
+        needs: unit_test_job
+        #if: github.ref == 'refs/head/main'
         runs-on: self-hosted
         steps:
-            - name: Docker Build
-              run: sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
-
             - name: Docker Login
-              run: sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD}}
+              uses: docker/login-action@v2.2.0
+              with:
+                username: ${{ vars.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD}}
 
-            - name: Docker Publish
-              run: sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+            - name: Docker Build
+              uses: docker/build-push-action@v4
+              with:
+                context: .
+                push: false
+                tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
-            - name: Docker Logout
-              run: sudo docker logout https://docker.io
-    test_job:
+            - name: Docker Image Testing
+              run: |
+                  docker run --name frontend-app -itd \
+                      -p 3000:3000 \
+                      ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+
+                  curl http://localhost:3000/
+
+            #- name: Docker Build
+            #  run: sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
+
+            #- name: Docker Login
+            #  run: sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD}}
+
+            #- name: Docker Publish
+            #  run: sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+
+            #- name: Docker Logout
+            #  run: sudo docker logout https://docker.io
+    test_image_job:
+        name: Test Docker Image
         if: github.ref == 'refs/head/main'
-        needs: build_job
+        needs: build_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
@@ -119,9 +146,10 @@ jobs:
             - name: Clean Docker Deployments
               run: |
                   sudo docker stop frontend-app && sudo docker rm frontend-app
-    deploy_job:
+    deploy_image_job:
+        name: Deploy Docker Image
         if: github.ref == 'refs/head/main'
-        needs: test_job
+        needs: test_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
