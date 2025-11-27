@@ -116,18 +116,17 @@ jobs:
                   sleep 30s
                   curl http://localhost:3000/
 
-            #- name: Docker Build
-            #  run: sudo docker build -t ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest .
+            - name: Docker Push
+              uses: docker/build-push-action@v4
+              with:
+                context: .
+                push: true
+                tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
-            #- name: Docker Login
-            #  run: sudo docker login --username=${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD}}
-
-            #- name: Docker Publish
-            #  run: sudo docker push ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
 
             #- name: Docker Logout
             #  run: sudo docker logout https://docker.io
-    test_image_job:
+    post_test_image_job:
         name: Test Docker Image
         if: github.ref == 'refs/head/main'
         needs: build_image_job
@@ -150,7 +149,7 @@ jobs:
     deploy_image_job:
         name: Deploy Docker Image
         if: github.ref == 'refs/head/main'
-        needs: test_image_job
+        needs: post_test_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
