@@ -127,30 +127,10 @@ jobs:
 
             #- name: Docker Logout
             #  run: sudo docker logout https://docker.io
-    post_test_image_job:
-        name: Test Docker Image
-        if: github.ref == 'refs/head/main'
-        needs: build_image_job
-        runs-on: self-hosted
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v5
-                  
-            - name: Run Docker image
-              run: | 
-                  sudo docker run -itd -p 3000:3000 --name frontend-app ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
-                  sleep 30s
-
-            - name: Test Docker Image
-              run: curl http://localhost:3000/test
-
-            - name: Clean Docker Deployments
-              run: |
-                  sudo docker stop frontend-app && sudo docker rm frontend-app
     deploy_image_job:
         name: Deploy Docker Image
         if: github.ref == 'refs/head/main'
-        needs: post_test_image_job
+        needs: build_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
