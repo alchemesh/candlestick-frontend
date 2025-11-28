@@ -31,7 +31,7 @@ COPY . .
 #RUN rm /var/www/html/index.html
 #RUN a2enmod ssl && a2ensite default-ssl
 EXPOSE 3000
-CMD ["node", "app.js"]
+CMD ["node", "server.js"]
 
 #ENTRYPOINT service apache2 restart && bash 
 

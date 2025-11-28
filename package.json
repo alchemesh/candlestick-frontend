@@ -1,16 +1,30 @@
 {
-  "name": "nodejs-image-demo",
+  "name": "Candlestick-Application",
   "version": "1.0.0",
   "description": "nodejs image demo",
   "author": "Jorrell Smith <sabatiel180@gmail.com>",
   "license": "MIT",
   "main": "app.js",
+  "jest": {
+    "reporters": [
+      "default",
+      ["jest-junit", {
+        "outputDirectory": "artifacts",
+        "outputName": "event-test.xml"
+      }]
+    ]
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "coverage": "jest --coverage"
+  },
   "keywords": [
     "nodejs",
     "bootstrap",
     "express",
     "amqp",
-    "ejs"
+    "ejs",
+    "jest"
   ],
   "dependencies": {
     "amqplib": "^0.10.3",
@@ -18,7 +32,10 @@
     "ejs": "^3.1.10"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.10.7" 
+    "@types/amqplib": "^0.10.7",
+    "jest": "^29.0.0",
+    "jest-junit": "^16.0.0",
+    "supertest": "^6.0.0"
   }
 
 }

@@ -4,30 +4,30 @@ const app = express();
 const router = express.Router();
 
 const path = __dirname + '/';
-const port = 3000;
+//const port = 3000;
 
 
 // Function for RabbitMQ to send message to queue
 async function sendToRabbitMQ(queueName, message) {
-    let connection;
-    try {
-        connection = await amqp.connect('amqp://rabbitmq') // Replace with your RabbitMQ connection string
-        const channel = await connection.createChannel();
+  let connection;
+  try {
+      connection = await amqp.connect('amqp://rabbitmq') // Replace with your RabbitMQ connection string
+      const channel = await connection.createChannel();
 
-        await channel.assertQueue(queueName, {
-            durable: false // Set to true if you want messages to persist across RabbitMQ restarts
-        });
+      await channel.assertQueue(queueName, {
+          durable: false // Set to true if you want messages to persist across RabbitMQ restarts
+      });
 
-        channel.sendToQueue(queueName, Buffer.from(message));
+      channel.sendToQueue(queueName, Buffer.from(message));
 
-        await channel.close();
-    } catch (error) {
-        console.error('Error sending message to RabbitMQ:', error);
-    } finally {
-        if (connection) {
-            await connection.close();
-        }
-    }
+      await channel.close();
+  } catch (error) {
+      console.error('Error sending message to RabbitMQ:', error);
+  } finally {
+      if (connection) {
+          await connection.close();
+      }
+  }
 }
 
 // Function to fetch the event data from the Java API
@@ -49,13 +49,13 @@ async function fetchUsersFromJavaAPI(eventID) {
 
 // Function to create Event ID
 function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 function dataQualityCheck(data) {
@@ -71,14 +71,14 @@ function dataQualityCheck(data) {
 }
 
 function dataIntegrityCheck(data) {
-        if(data.length < 1)
-               	return "none!";
+  if(data.length < 1)
+          return "none!";
 
-        re = /^[a-zA-Z0-9]*$/;
-        if(!re.test(data))
-               	return "wrong!";
+  re = /^[a-zA-Z0-9]*$/;
+  if(!re.test(data))
+          return "wrong!";
 
-        return true;
+  return true;
 }
 
 router.use(function (req,res,next) {
@@ -94,54 +94,59 @@ router.get('/', function(req,res){
  
 });
 
-// API route for test
-router.get('/test', function(req,res){
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  res.send("Test Successful");
- 
-});
-
 // API route to fetch the event data from the Java API
 router.get('/api/:eventID', function(req,res){
-  const eventID = req.params.eventID;
+  try {
+    const eventID = req.params.eventID;
 
-  if(typeof dataIntegrityCheck(eventID) != "boolean") {
-        res.status(201).json({eventID: null});
+    if(typeof dataIntegrityCheck(eventID) != "boolean" || eventID.length != 20) {
+      throw {eventID: null, message: "Event ID is not valid"};
+    }
+
+    res.statusCode = 200;
+    fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
   }
-
-  res.statusCode = 200;
-  fetchUsersFromJavaAPI(eventID).then(stock =>res.json(stock));
+  catch(error) {
+    res.status(201).json({eventID: null, message: "Event ID is not valid"});
+  }
 });
 
 // API route to begin the event
 router.post('/api/start', function(req,res){
-  const data = req.body;
+  try {
+    const data = req.body;
 
-  var event = data.event;
-  var ticker = data.ticker;
+    var event = data.event;
 
-  console.log(ticker)
-  if(!dataQualityCheck(ticker))
-    res.status(201).json({eventID: null, ticker: ticker});
+    if(event === "start") {
+      var ticker = data.ticker;
 
-  if(event === "start") {
-    const timestamp = new Date();
+      if(!dataQualityCheck(ticker))
+        throw {eventID: null, ticker: ticker};
 
-    const eventId = makeid(20);
-    var message = {
-      eventID: eventId,
-      ticker: ticker,
-      timestamp: timestamp
-    };
+      const timestamp = new Date();
 
-    const jsonString = JSON.stringify(message);
+      const eventId = makeid(20);
+      var message = {
+        eventID: eventId,
+        ticker: ticker,
+        timestamp: timestamp
+      };
 
-    
-    sendToRabbitMQ('my_queue', jsonString);
+      const jsonString = JSON.stringify(message);    
+      sendToRabbitMQ('my_queue', jsonString);
+
+      res.status(201).json(message);
+    }
+
+    else {
+      res.status(201).json({event: event, message: "Could not process the event"});
+    }
+  }
+  catch(error) {
+     res.status(201).json(error);
   }
 
-  res.status(201).json(message);
 });
 
 // API route to render the chart
@@ -165,6 +170,8 @@ app.use('/', router);
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 
-app.listen(port, function () {
-  console.log('Example app listening on port 8080!')
-})
+//app.listen(port, function () {
+//  console.log('Example app listening on port 3000!')
+//})
+
+module.exports = app;
