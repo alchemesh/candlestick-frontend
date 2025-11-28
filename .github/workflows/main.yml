@@ -115,6 +115,7 @@ jobs:
 
                   sleep 30s
                   curl http://localhost:3000/
+                  docker stop frontend-app && docker rm frontend-app
 
             - name: Docker Push
               uses: docker/build-push-action@v4

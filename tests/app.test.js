@@ -23,6 +23,15 @@ describe ('Event API', () => {
         
     });
 
+    it('should return the csChart ejs file with the event id in the canvas element', async () => {
+        const res = await request(app).get('/cschart/TEST')
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.headers['content-type']).toMatch(/text\/html/);
+        expect(res.text).toContain('<canvas data-event=\"TEST\" id=\"candlestickChart\" class=\"chart\"></canvas>');
+        
+    });
+
     it('should return an error on the event trigger', async () => {
         const event = { event: 'test', ticker: null };
 
