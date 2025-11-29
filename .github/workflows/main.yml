@@ -147,6 +147,6 @@ jobs:
             - name: fetch Kubernetes CLuster Details
               run: |
                   kubectl version --short
-                  ls /etc/kubernetes/
+                  kubectl config view
                   echo ............................
                   kubectl get nodes
