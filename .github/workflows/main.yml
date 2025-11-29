@@ -147,6 +147,6 @@ jobs:
             - name: fetch Kubernetes CLuster Details
               run: |
                   kubectl version --short
-                  kubectl config view
-                  echo ............................
-                  kubectl get nodes
+                  kubectl -n awesome-system create serviceaccount cluster-admin
+                  #echo ............................
+                  #kubectl get nodes
