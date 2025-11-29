@@ -133,7 +133,7 @@ jobs:
     deploy_image_job:
         name: Deploy Docker Image
         #if: github.ref == 'refs/head/main'
-        needs: build_image_job
+        #needs: build_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
