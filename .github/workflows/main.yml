@@ -129,13 +129,20 @@ jobs:
             #  run: sudo docker logout https://docker.io
     deploy_image_job:
         name: Deploy Docker Image
-        if: github.ref == 'refs/head/main'
+        #if: github.ref == 'refs/head/main'
         needs: build_image_job
         runs-on: self-hosted
         steps:
             - name: Checkout
               uses: actions/checkout@v5
               
-            - name: Deploy Application
+            - name: Install Kebectl CLI
+              uses: azure/setup-kubectl@v3
+              with:
+                version: 'v1.26.0'
+                
+            - name: fetch Kubernetes CLuster Details
               run: |
-                  cat README.md
+                  kubectl version --short
+                  echo ............................
+                  kubectl get nodes
