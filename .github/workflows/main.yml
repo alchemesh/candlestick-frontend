@@ -166,3 +166,11 @@ jobs:
                 NAMESPACE: ${{ vars.NAMESPACE }}
                 REPLICAS: ${{ vars.REPLICAS}}
                 IMAGE: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+
+            - name: Check Files
+              run: |
+                  cat kubernetes/development/*.yaml
+
+            - name: Deploy to Dev Env
+              run: |
+                  kubctl apply -f kubernetes/development
