@@ -14,5 +14,5 @@ spec:
       nodePort: 30005
       protocol: TCP
   selector:
-    name: candlestick-frontend-pod
+    name: candlestick-frontend-app-pod
     app: candlestick-frontend-app
