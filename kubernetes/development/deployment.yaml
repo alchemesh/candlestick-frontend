@@ -5,6 +5,7 @@ metadata:
   labels:
     name: candlestick-frontend-app-deploy
     app: candlestick-frontend-app
+  namespace: _{_NAMESPACE_}_
 spec:
   replicas: _{_REPLICAS_}_
   selector:
