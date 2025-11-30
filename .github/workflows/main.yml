@@ -139,10 +139,16 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v5
               
-            - name: Install Kebectl CLI
+            - name: Install Kubectl CLI
               uses: azure/setup-kubectl@v3
               with:
-                version: 'v1.26.0'
+                version: 'v1.33.6'
+
+            - name: Set Kubeconfig
+              uses: azure/k8s-set-context@v3
+              with:
+                method: kubeconfig
+                kubeconfig: ${{ secrets.KUBECONFIG }}
                 
             - name: fetch Kubernetes CLuster Details
               run: |
