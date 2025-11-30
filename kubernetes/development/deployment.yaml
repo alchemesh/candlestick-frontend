@@ -17,7 +17,7 @@ spec:
       name: candlestick-frontend-app-pod
       labels:
         name: candlestick-frontend-app-pod
-        app: candlstick-frontend-app
+        app: candlestick-frontend-app
     spec:
       containers:
         - name: candlestick-frontend-app
