@@ -150,8 +150,19 @@ jobs:
                 method: kubeconfig
                 kubeconfig: ${{ secrets.KUBECONFIG }}
                 
-            - name: fetch Kubernetes CLuster Details
+            - name: Fetch Kubernetes CLuster Details
               run: |
                   kubectl version
                   echo ............................
                   kubectl get nodes
+
+            - name: Replace Token in Manifest files
+              uses: cschleiden/replace-tokens@v1
+              with:
+                tokenPrefix: '_(_'
+                tokenSuffix: '_)_'
+                files: '["kubernetes/development/*.yaml"]'
+              env:
+                NAMESPACE: ${{ vars.NAMESPACE }}
+                REPLICAS: ${{ vars.REPLICAS}}
+                IMAGE: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest

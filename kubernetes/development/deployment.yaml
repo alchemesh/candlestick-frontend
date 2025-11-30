@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: candlestick-frontend-app-deploy
+  labels:
+    name: candlestick-frontend-app-deploy
+    app: candlestick-frontend-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: candlestick-frontend-app-pod
+      app: candlestick-frontend-app
+
+  template:
+    metadata:
+      name: candlestick-frontend-app-pod
+      labels:
+        name: candlestick-frontend-app-pod
+        app: candlstick-frontend-app
+    spec:
+      containers:
+        - name: candlestick-frontend-app
+          imagePullPolicy: Always
+          image: sabatiel180/candlestick-frontend-app:latest
+          ports:
+            - containerPort: 3000
+              name: http
