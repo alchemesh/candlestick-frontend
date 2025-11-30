@@ -6,7 +6,7 @@ metadata:
     name: candlestick-frontend-app-deploy
     app: candlestick-frontend-app
 spec:
-  replicas: 3
+  replicas: _{_REPLICAS_}_
   selector:
     matchLabels:
       name: candlestick-frontend-app-pod
@@ -22,7 +22,7 @@ spec:
       containers:
         - name: candlestick-frontend-app
           imagePullPolicy: Always
-          image: sabatiel180/candlestick-frontend-app:latest
+          image: _{_IMAGE_}_
           ports:
             - containerPort: 3000
               name: http
