@@ -181,7 +181,7 @@ jobs:
               id: set-ingress-host-id
               run: |
                   echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ingress -o json | jq -r '.items[] | .spec.rules[] | .host')" >> "$GITHUB_OUTPUT"
-                  echo $APP_INGRESS_HOST
+                  #echo $APP_INGRESS_HOST
     integration_test_job:
         name: Dev Integration Testing
         #if: github.ref == 'refs/head/main'
@@ -190,7 +190,7 @@ jobs:
         steps:
             - name: Test URL Output using cURL
               env:
-                URL: ${{ needs.dev_image_job.outputs.APP_INGRESS_URL }}
+                URL: ${{ needs.deploy_image_job.outputs.APP_INGRESS_URL }}
               run: |
                   echo $URL
                   echo "................................"
