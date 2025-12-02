@@ -26,11 +26,11 @@ spec:
           image: _{_IMAGE_}_
           env:
             - name: NODE_NAME
-              valueFron:
+              valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: POD_NAME
-              valueFron:
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
           ports:
