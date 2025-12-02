@@ -181,6 +181,7 @@ jobs:
               id: set-ingress-host-id
               run: |
                   echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ingress -o json | jq -r '.items[] | .spec.rules[] | .host')" >> "$GITHUB_OUTPUT"
+                  echo $APP_INGRESS_HOST
     integration_test_job:
         name: Dev Integration Testing
         #if: github.ref == 'refs/head/main'
