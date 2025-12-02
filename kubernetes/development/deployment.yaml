@@ -24,6 +24,15 @@ spec:
         - name: candlestick-frontend-app
           imagePullPolicy: Always
           image: _{_IMAGE_}_
+          env:
+            - name: NODE_NAME
+              valueFron:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFron:
+                fieldRef:
+                  fieldPath: metadata.name
           ports:
             - containerPort: 3000
               name: http
