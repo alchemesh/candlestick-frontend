@@ -7,7 +7,7 @@ metadata:
   namespace: _{_NAMESPACE_}_
 spec:
   rules:
-  - host: candlestick.com
+  - host: candlestick-app-_{_NAMESPACE_}_.me.io
     http:
       paths:
       - path: /
