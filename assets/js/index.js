@@ -2,10 +2,10 @@
 const submit = document.getElementById('selection-submit'); //Submit button
 var intervalId; //Interval for msg change function
 
-const nodeName = process.env.NODE_NAME;
-const podName = process.env.POD_NAME;
+//const nodeName = process.env.NODE_NAME;
+//const podName = process.env.POD_NAME;
 
-console.log(podName);
+//console.log(podName);
 
 
 // Function to change the msg in the loader

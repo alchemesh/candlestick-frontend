@@ -6,6 +6,10 @@ const router = express.Router();
 const path = __dirname + '/';
 //const port = 3000;
 
+const nodeName = process.env.NODE_NAME;
+const podName = process.env.POD_NAME;
+
+//console.log(podName);
 
 // Function for RabbitMQ to send message to queue
 async function sendToRabbitMQ(queueName, message) {
@@ -90,7 +94,13 @@ router.use(function (req,res,next) {
 router.get('/', function(req,res){
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
-  res.sendFile(path + 'assets/views/index.html');
+
+  const data = {
+    podName: podName,
+    nodeName: nodeName
+  };
+
+  res.render(path + 'assets/views/index', data);
  
 });
 
