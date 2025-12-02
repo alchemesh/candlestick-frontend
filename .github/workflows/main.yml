@@ -189,7 +189,7 @@ jobs:
         steps:
             - name: Test URL Output using cURL
               env:
-                URL: ${{ needs.dev_image_job.outputs.APP_INGRESS_HOST }}
+                URL: ${{ needs.dev_image_job.outputs.APP_INGRESS_URL }}
               run: |
                   echo $URL
                   echo "................................"
