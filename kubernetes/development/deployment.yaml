@@ -34,9 +34,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: RABBITMQ
-              value: _{_RABBITMQ_IP_}_
+              value: candlestick-rabbitmq-service
             - name: JAVA_API
-              value: candlestick-java-api-serivce._{_NAMESPACE_}_.svc
+              value: candlestick-java-api-service._{_NAMESPACE_}_.svc
           ports:
             - containerPort: 3000
               name: http

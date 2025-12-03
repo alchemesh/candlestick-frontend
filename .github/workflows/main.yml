@@ -93,8 +93,8 @@ jobs:
                   cat event-test.xml
     build_image_job:
         name: Docker Containerization
-        needs: unit_test_job
-        if: github.ref == 'refs/head/main'
+        #needs: unit_test_job
+        #if: github.ref == 'refs/head/main'
         runs-on: self-hosted
         steps:
             - name: Docker Login
@@ -168,7 +168,6 @@ jobs:
                 NAMESPACE: ${{ vars.NAMESPACE }}
                 REPLICAS: ${{ vars.REPLICAS}}
                 IMAGE: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
-                RABBITMQ_IP: 10.2.28.0
 
             - name: Check Files
               run: |
