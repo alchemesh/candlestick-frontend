@@ -6,8 +6,11 @@ const router = express.Router();
 const path = __dirname + '/';
 //const port = 3000;
 
+// Get Environment Variables
 const nodeName = process.env.NODE_NAME;
 const podName = process.env.POD_NAME;
+const rabbitmq = process.env.RABBITMQ;
+const javaAPI = process.env.JAVA_API;
 
 //console.log(podName);
 
@@ -15,7 +18,7 @@ const podName = process.env.POD_NAME;
 async function sendToRabbitMQ(queueName, message) {
   let connection;
   try {
-      connection = await amqp.connect('amqp://rabbitmq') // Replace with your RabbitMQ connection string
+      connection = await amqp.connect('amqp://' + rabbitmq +'') // Replace with your RabbitMQ connection string
       const channel = await connection.createChannel();
 
       await channel.assertQueue(queueName, {
@@ -37,7 +40,7 @@ async function sendToRabbitMQ(queueName, message) {
 // Function to fetch the event data from the Java API
 async function fetchUsersFromJavaAPI(eventID) {
   try {
-    const response = await fetch('http://java-api:8080/api/' + eventID);
+    const response = await fetch('http://' + javaAPI + '/api/' + eventID);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
