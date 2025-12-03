@@ -168,6 +168,7 @@ jobs:
                 NAMESPACE: ${{ vars.NAMESPACE }}
                 REPLICAS: ${{ vars.REPLICAS}}
                 IMAGE: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+                RABBITMQ_IP: 10.2.28.0
 
             - name: Check Files
               run: |
