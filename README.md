@@ -30,3 +30,36 @@ The docker image needs 2 environment variables to function which are used to con
 - JAVA_API
 
 ***Note: This application is a producer, and therefore will not perform any function without the queue. The Java API is just as equally important, for the data can not be retieved without it.***
+
+### Docker ###
+
+#### Docker Build ####
+The manual approach can be used by downloading the repository your local machine. Navigate to the folder and run:
+
+docker build -t [your_image_name] .
+
+#### Docker Run ####
+Run the image using the environment variables for the RabbitMQ and Java API images.
+
+docker run -itd --env=RABBITMQ=[your_rabbitmq_image_name] --env=JAVA_API=[your_java_api_name] -p 3000:3000 --name [your_container_name] [your_image_name]
+
+Where:
+* your_rabbitmq_image_name = (The docker image name for your RabbitMQ instance)
+* your_java_api_name = (The docker image name for the Java API instance)
+* -p 3000 = (Port the application listens on)
+* your_container_name = (The name you want to issue to the running container)
+* your_image_name = (The name you used if you built the image manually. Use sabatiel180/candlestick-frontend-app for easier deployment)
+
+Information about deployment for the Java API can be found at [Java API] (https://github.com/alchemesh/candlestick-java-api). RabbitMQ is the queue service used for the application and has its own official image from Docker. No additional configuration is needed for RabbitMQ and can be deployed with the following command:
+
+* docker run -itd --name [your_container_name] rabbitmq:3-management
+
+
+### Kubernetes ###
+The Kubernetes files in this repo can be used as a template for deployment.
+
+#### Deployment ####
+The deployment.yaml file will deploy the python backend as a replica set with a name and app labels as candlestick-frontend-app-deploy and candlestick-frontend-app respectfully. ***Note: The RABBITMQ and JAVA_API environment variables are set to the Kubernetes RABBITMQ and Java API deployment service names which should be deployed as well***
+
+#### Service ####
+The NodeJS frontend replicaset is deployed as a NodePort service, but the ingress will provide Loadbalancing for the frontend application. The service name, candlestick-frontend-service, is not used by any other application on the stack for communication.
