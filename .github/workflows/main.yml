@@ -9,7 +9,7 @@ on:
 
 jobs:
     unit_test_job:
-        if: github.ref == 'refs/head/main'
+        #if: github.ref == 'refs/head/main'
         name: Unit Test
         runs-on: self-hosted
         steps:
@@ -42,7 +42,7 @@ jobs:
                 path: artifacts/event-test.xml
                 retention-days: 5
     code_coverage_job:
-        if: github.ref == 'refs/head/main'
+        #if: github.ref == 'refs/head/main'
         name: Code Coverage
         runs-on: self-hosted
         steps:
@@ -75,7 +75,7 @@ jobs:
                 path: coverage
                 retention-days: 5
     verify_unit_test_job:
-        if: github.ref == 'refs/head/main'
+        #if: github.ref == 'refs/head/main'
         name: Verify Unit Test
         needs: unit_test_job
         runs-on: self-hosted
@@ -93,7 +93,7 @@ jobs:
                   cat event-test.xml
     build_image_job:
         name: Docker Containerization
-        #needs: unit_test_job
+        needs: unit_test_job
         #if: github.ref == 'refs/head/main'
         runs-on: self-hosted
         steps:
