@@ -40,7 +40,7 @@ async function sendToRabbitMQ(queueName, message) {
 // Function to fetch the event data from the Java API
 async function fetchUsersFromJavaAPI(eventID) {
   try {
-    const response = await fetch('http://' + javaAPI + ':8080/api/' + eventID);
+    const response = await fetch('http://' + javaAPI + '/api/' + eventID);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
