@@ -9,6 +9,7 @@ on:
 
 jobs:
     unit_test_job:
+        #if: github.ref == 'refs/head/main'
         name: Unit Test
         runs-on: self-hosted
         steps:
@@ -41,6 +42,7 @@ jobs:
                 path: artifacts/event-test.xml
                 retention-days: 5
     code_coverage_job:
+        #if: github.ref == 'refs/head/main'
         name: Code Coverage
         runs-on: self-hosted
         steps:
@@ -73,6 +75,7 @@ jobs:
                 path: coverage
                 retention-days: 5
     verify_unit_test_job:
+        #if: github.ref == 'refs/head/main'
         name: Verify Unit Test
         needs: unit_test_job
         runs-on: self-hosted
@@ -129,13 +132,66 @@ jobs:
             #  run: sudo docker logout https://docker.io
     deploy_image_job:
         name: Deploy Docker Image
-        if: github.ref == 'refs/head/main'
+        #if: github.ref == 'refs/head/main'
         needs: build_image_job
+        outputs:
+          APP_INGRESS_URL: ${{ steps.set-ingress-host-id.outputs.APP_INGRESS_HOST}}
         runs-on: self-hosted
         steps:
             - name: Checkout
               uses: actions/checkout@v5
               
-            - name: Deploy Application
+            - name: Install Kubectl CLI
+              uses: azure/setup-kubectl@v3
+              with:
+                version: 'v1.33.6'
+
+            - name: Set Kubeconfig
+              uses: azure/k8s-set-context@v3
+              with:
+                method: kubeconfig
+                kubeconfig: ${{ secrets.KUBECONFIG }}
+                
+            - name: Fetch Kubernetes CLuster Details
               run: |
-                  cat README.md
+                  kubectl version
+                  echo ............................
+                  kubectl get nodes
+
+            - name: Replace Token in Manifest files
+              uses: cschleiden/replace-tokens@v1
+              with:
+                tokenPrefix: '_{_'
+                tokenSuffix: '_}_'
+                files: '["kubernetes/development/*.yaml"]'
+              env:
+                NAMESPACE: ${{ vars.NAMESPACE }}
+                REPLICAS: ${{ vars.REPLICAS}}
+                IMAGE: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}:latest
+
+            - name: Check Files
+              run: |
+                  cat kubernetes/development/*.yaml
+
+            - name: Deploy to Dev Env
+              run: |
+                  kubectl apply -f kubernetes/development
+
+            - name: Set App Ingress Host URL
+              id: set-ingress-host-id
+              run: |
+                  echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ingress -o json | jq -r '.items[] | .spec.rules[] | .host')" >> "$GITHUB_OUTPUT"
+                  #echo $APP_INGRESS_HOST
+    integration_test_job:
+        name: Dev Integration Testing
+        #if: github.ref == 'refs/head/main'
+        needs: deploy_image_job
+        runs-on: self-hosted
+        steps:
+            - name: Test URL Output using cURL
+              env:
+                URL: ${{ needs.deploy_image_job.outputs.APP_INGRESS_URL }}
+              run: |
+                  echo $URL
+                  echo "................................"
+                  curl http://$URL
