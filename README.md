@@ -2,7 +2,7 @@
 
 The NodeJS frontend for the Candlestick Pattern application.
 
-The NodeJS frontend is used for GUI interface for the user. The application is displayed and the event is triggered when the user submits their choice. This event is pushed to a queue (RabbitMQ) for processing by the other microservices from the stack. After the event has been completed, a chart is graphed using ChartJS, displaying the stock the user chose and the daily movement in candlesticks for the duration given. The application, then determines if a candlestick pattern is found within the duration period. If found, a description of that pattern is displayed, as well as the potential/expected short to mid term price movement. 
+The NodeJS frontend is the GUI interface for the user. The event is triggered when the user submits their choice. This event is pushed to a queue (RabbitMQ) forfurther processing by the other microservices on the stack. After the event has been completed, a chart is graphed using ChartJS, displaying the user's stock choice and the daily movement in candlesticks for the duration period given. The application, then determines if a candlestick pattern is found within that period. If found, a description of that pattern is displayed, as well as the potential/expected short to mid term price movement. 
 
 NodeJS Endpoints
 

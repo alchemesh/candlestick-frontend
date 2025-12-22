@@ -9,7 +9,7 @@ const patterns = [
     after: true,
     beforeDay: {"state": "Bearish", "candles": ["Big Red Candle", "Marubozu"]},
     afterDay: {"state": "Bullish", "candles": ["Big Green Candle", "Marubozu"]},
-    description: ""
+    description: "A Morning Star is a bullish candlestick pattern recognized by traders for signaling a potential trend reversal in a downtrend. Comprised of three distinct candles, it indicates the start of an upward climb."
   },
   {
     name: "Inverted Hammer",
@@ -20,7 +20,7 @@ const patterns = [
     after: true,
     beforeDay: {"state": "Bearish", "candles": ["Big Red Candle", "Marubozu"]},
     afterDay: {"state": "Bullish", "candles": ["Big Green Candle", "Marubozu"]},
-    description: ""
+    description: "An inverted hammer is a bullish reversal candlestick pattern signaling the potential end of a downtrend, featuring a small body, a long upper shadow (at least twice the body), and little to no lower shadow, showing buyers testing resistance but sellers pulling price back near the open, indicating market exhaustion and a shift towards a potential uptrend."
   },
   {
     name: "Bullish Engulfing",
@@ -30,7 +30,7 @@ const patterns = [
     before: true,
     after: false,
     beforeDay: {"state": "Bearish", "candles": ["Big Red Candle"]},
-    description: ""
+    description: "A bullish engulfing candle is a two-candle pattern in technical analysis, signaling a potential uptrend reversal from a downtrend, where a small red (bearish) candle is followed by a larger green (bullish) candle whose body completely covers, or \"engulfs,\" the previous red candle's body, showing buyers overpowering sellers."
   },
   {
     name: "Morning Star Doji",
@@ -41,10 +41,10 @@ const patterns = [
     after: true,
     beforeDay: {"state": "Bearish", "candles": ["Big Red Candle"]},
     afterDay: {"state": "Bullish", "candles": ["Big Green Candle"]},
-    description: ""
+    description: "The Morning Star Doji is a bullish reversal pattern signaling a downtrend's potential end, featuring a long bearish candle (downtrend), a small doji (indecision/gap down), and a long bullish candle (buying takes over), indicating sellers are losing control and buyers are stepping in, suggesting a shift to an uptrend."
   },
   {
-    name: "Three Green Soldiers",
+    name: "Three White Soldiers",
     key: ["Big Green Candle", "Marubozu"],
     keyState: "Bullish",
     duration: 3,
@@ -52,7 +52,7 @@ const patterns = [
     after: true,
     beforeDay: {"state": "Bullish", "candles": ["Big Green Candle"]},
     afterDay: {"state": "Bullish", "candles": ["Big Green Candle"]},
-    description: ""
+    description: "The Three Green Soldiers (or White Soldiers) candlestick pattern is a strong bullish reversal signal, indicating buyers are taking control after a downtrend, suggesting a shift from selling pressure to strong buying momentum, seen as three consecutive long green candles with small upper wicks, each opening and closing progressively higher than the last."
   },
   {
     name: "Evening Star",
@@ -63,7 +63,7 @@ const patterns = [
     after: true,
     beforeDay: {"state": "Bullish", "candles": ["Big Green Candle"]},
     afterDay: {"state": "Bearish", "candles": ["Big Red Candle"]},
-    description: ""
+    description: "The Evening Star is a bearish, three-candlestick pattern signaling a potential reversal from an uptrend to a downtrend, appearing at price peaks; it shows strong buying (long green candle) followed by hesitation (small middle candle/star), then sellers taking control (long red candle)."
   },
   {
     name: "Bearish Engulfing",
@@ -73,7 +73,7 @@ const patterns = [
     before: true,
     after: false,
     beforeDay: {"state": "Bullish", "candles": ["Big Green Candle"]},
-    description: ""
+    description: "A bearish engulfing candle is a two-candle pattern in technical analysis, signaling a potential downtrend reversal from a prior uptrend; it features a small green (bullish) candle followed by a large red (bearish) candle whose body completely covers (engulfs) the first candle's body, showing sellers have overwhelmed buyers and taken control."
   }
 ];
 
@@ -101,7 +101,7 @@ function checkForPattern(days) {
           
           if (duration > 2) {
             
-            if(index > 0 || isEmptyArray(days[index + 1])) {                
+            if(index > 0 && (days[index + 1] !== undefined && days[index + 1] !== null)) {                
                 beforeDay = pattern.beforeDay;
                 beforeDayCandles = beforeDay.candles;
                 beforeDayState = beforeDay.state;
