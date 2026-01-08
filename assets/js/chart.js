@@ -299,6 +299,7 @@ fetch('/api/' + eventID).then(response => response.json()).then(data => {
         candlestickData.push({ t: day.date, o: day.open, h: day.high, l: day.low, c: day.close })                   
     });
 
+    createCandlestickChart(candlestickData, ticker);
     patternsFound = checkForPattern(patternData);
     
     if(isEmptyArray(patternsFound)) {
@@ -311,7 +312,6 @@ fetch('/api/' + eventID).then(response => response.json()).then(data => {
         patternText.innerHTML = patternsFound.pattern.name + " was found on: " + patternsFound.date;
     }
 
-    createCandlestickChart(candlestickData, ticker);
   }
 
 }).catch(error => console.log('Error'));

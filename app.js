@@ -1,5 +1,6 @@
 const amqp = require('amqplib');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const router = express.Router();
 
@@ -178,6 +179,11 @@ router.get('/cschart/:eventID', function(req,res){
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 app.use(express.static(path));
+app.use(cors({
+  origin: 'http://localhost',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use('/', router);
 
 // Set EJS as the view engine
